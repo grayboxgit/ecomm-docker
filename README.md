@@ -6,6 +6,7 @@ My m2-apache container is built on `fballiano/magento2-apache-php` and exists so
 ### Version 1.0.1
 * **Apache:** 2.4.25
 * **PHP:** 7.2.16
+* **Xdebug:** 2.7.1
 
 ### Example `docker-compose.yml` commands:
 
@@ -15,10 +16,11 @@ command: >
     cd /var/www/html/
     chown -R www-data pub/static; chown -R www-data generated; chown -R www-data var; chown -R www-data vendor;
     sudo -u www-data /usr/local/bin/composer install
-    sudo -u www-data php bin/magento app:config:import
     sudo -u www-data php bin/magento setup:upgrade
     sudo -u www-data php bin/magento setup:di:compile
     sudo -u www-data php bin/magento cache:enable config layout block_html collections reflection db_ddl compiled_config eav customer_notification config_integration config_integration_api target_rule config_webservice translate vertex
+    sudo -u www-data php bin/magento app:config:import
+    sudo -u www-data php bin/magento c:f
     /start.sh
   '
 ```
