@@ -1,6 +1,9 @@
 FROM fballiano/magento2-apache-php
 
+RUN rm -rf /var/lib/apt/lists/*
 RUN apt update || apt update
+RUN apt-get update || apt-get update
+
 RUN apt-get install -y sudo nano curl software-properties-common
 RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
 RUN apt-get install -y nodejs
