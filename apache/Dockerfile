@@ -1,5 +1,4 @@
-FROM php:7.3-apache
-MAINTAINER Fabrizio Balliano <fabrizio@fabrizioballiano.com>
+FROM php:7.4-apache
 
 RUN apt-get update \
   && apt-get install -y \
@@ -20,7 +19,6 @@ RUN docker-php-ext-configure \
     gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/; \
     docker-php-ext-install gd \
     intl \
-    mbstring \
     pdo_mysql \
     xsl \
     opcache \
@@ -29,7 +27,7 @@ RUN docker-php-ext-configure \
     sockets
 
 RUN apt-get install -y zip libzip-dev \
-  && docker-php-ext-configure zip --with-libzip \
+  && docker-php-ext-configure zip \
   && docker-php-ext-install zip
 
 ADD https://raw.githubusercontent.com/colinmollenhour/credis/master/Client.php /credis.php
@@ -43,9 +41,10 @@ RUN usermod -u 1000 www-data; \
   curl -o /tmp/composer-setup.php https://getcomposer.org/installer; \
   curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig; \
   php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { unlink('/tmp/composer-setup.php'); echo 'Invalid installer' . PHP_EOL; exit(1); }"; \
-  php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer; \
-	rm /tmp/composer-setup.php; \
+  php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer --version=1.10.22; \
+  rm /tmp/composer-setup.php; \
   chmod +x /usr/local/bin/composer; \
+  composer self-update --1; \
   curl -o n98-magerun2.phar http://files.magerun.net/n98-magerun2-latest.phar; \
   chmod +x ./n98-magerun2.phar; \
   chmod +x /start.sh; \
@@ -54,6 +53,12 @@ RUN usermod -u 1000 www-data; \
   mkdir -p /root/.composer
 
 RUN apt-get install -y sudo nano
+
+## bin/magento support:backup:db support
+RUN apt-get install -y mariadb-client-10.3 lsof
+
+## grunt support
+RUN apt-get install -y ncat
 
 RUN apt-get install $PHPIZE_DEPS \
     && pecl install xdebug-2.9.6
