@@ -1,4 +1,4 @@
-FROM tylervigeant/ecomm-docker:m2-apache-grunt-1.3.0
+FROM tylervigeant/ecomm-docker:m2-apache-1.3.0
 
 ADD https://raw.githubusercontent.com/fballiano/docker-magento2-cron/master/crontab /crontab.www-data
 ADD https://raw.githubusercontent.com/fballiano/docker-magento2-cron/master/start.sh /start.sh

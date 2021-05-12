@@ -3,9 +3,9 @@
 ## m2-apache
 My m2-apache container is built on `fballiano/magento2-apache-php` and exists solely to version-lock that image via my own tags.
 
-### Version 1.0.1
+### Version 1.3.2
 * **Apache:** 2.4.38
-* **PHP:** 7.3.206
+* **PHP:** 7.4.19
 * **Xdebug:** 2.9.6
 
 ### Example `docker-compose.yml` commands:
