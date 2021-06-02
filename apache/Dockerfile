@@ -15,17 +15,19 @@ RUN apt-get update \
     psmisc \
   && apt-get clean
 
-RUN docker-php-ext-configure \
-    gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/; \
-    docker-php-ext-install gd \
-    intl \
-    pdo_mysql \
-    xsl \
-    opcache \
-    bcmath \
-    soap \
-    sockets
-
+RUN set -eux; \
+    docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg; \
+    docker-php-ext-configure intl; \
+    docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd; \
+    docker-php-ext-install -j "$(nproc)" \
+        gd \
+        intl \
+        opcache \
+        pdo_mysql \
+        xsl \
+        bcmath \
+        soap \
+        sockets 
 RUN apt-get install -y zip libzip-dev \
   && docker-php-ext-configure zip \
   && docker-php-ext-install zip
